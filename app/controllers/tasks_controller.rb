@@ -1,5 +1,7 @@
 class TasksController < ApplicationController
+  before_action :require_user_logged_in
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  
   def index
     @tasks = Task.all.page(params[:page]).per(3)
   end
@@ -19,7 +21,7 @@ end
           flash[:success] = "Taskが正常に投稿されました"
           redirect_to @task
       else
-          flash.now[:danger] = "Taskが正常に投稿されました"
+          flash.now[:danger] = "Taskが正常に投稿されませんでした"
           render :new
       end
   end 
@@ -43,7 +45,7 @@ end
     set_task
     @task.destroy
 
-    flash[:success] = 'Task は正常に削除されました'
+    flash[:success] = 'Task は正常に追加されました'
     redirect_to tasks_url
   end
  
